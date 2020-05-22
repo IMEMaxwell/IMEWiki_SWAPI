@@ -1,0 +1,17 @@
+' Ok Button click event handler
+Private Sub OkBtn_Click()
+
+    ' Declares local variables
+    Dim length As Double
+    Dim width As Double
+    Dim height As Double
+    
+    ' Assign values from text box
+    length = CDbl(BoxLength.Text)
+    width = CDbl(BoxWidth.Text)
+    height = CDbl(BoxHeight.Text)
+    
+    ' Call myCreateCube sub procedure
+    myCreateCube1.myCreateCube length, width, height
+    
+End Sub
