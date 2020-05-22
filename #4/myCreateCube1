@@ -1,0 +1,38 @@
+' Ensure all variables are declared before use
+Option Explicit
+
+' Change from generic object to solidworks object
+Dim swApp As SldWorks.SldWorks
+
+' Take arguments of length, width and height
+Sub myCreateCube(length As Double, width As Double, height As Double)
+
+' Local variables declaration
+Dim swModel As SldWorks.ModelDoc2
+Dim boolStatus As Boolean
+Dim vSkLines() As SldWorks.SketchSegment
+Dim swFeat As SldWorks.Feature
+Dim swFeatMgr As SldWorks.FeatureManager
+
+Set swApp = Application.SldWorks
+
+' Create new part and assign to variable
+Set swModel = swApp.NewDocument("C:\ProgramData\SolidWorks\SOLIDWORKS 2020\templates\Part.prtdot", 0, 0, 0)
+
+' Select Top plane for sketch insertion
+boolStatus = swModel.Extension.SelectByID2("Top Plane", "PLANE", 0, 0, 0, False, 0, Nothing, 0)
+
+' Insert a sketch
+swModel.SketchManager.InsertSketch True
+
+' Create center square with the size length(mm)/2000 & width(mm)/1000
+vSkLines = swModel.SketchManager.CreateCenterRectangle(0, 0, 0, length / 2000, width / 2000, 0)
+
+' Create extrusion of height(mm)/1000
+Set swFeatMgr = swModel.FeatureManager
+Set swFeat = swFeatMgr.FeatureExtrusion3(True, False, False, 0, 0, height / 1000, 0, False, False, False, False, 0, 0, False, False, False, False, True, True, True, 0, 0, False)
+
+' Clear all selection
+swModel.ClearSelection2 (True)
+
+End Sub
